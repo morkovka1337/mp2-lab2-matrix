@@ -70,7 +70,7 @@ TEST(TVector, throws_when_set_element_with_negative_index)
 TEST(TVector, throws_when_set_element_with_too_large_index)
 {
 	TVector<int> v(4);
-	ASSERT_ANY_THROW(v[100000000000000] = 4;);
+	ASSERT_ANY_THROW(v[5] = 4);
 }
 
 TEST(TVector, can_assign_vector_to_itself)
@@ -82,7 +82,12 @@ TEST(TVector, can_assign_vector_to_itself)
 TEST(TVector, can_assign_vectors_of_equal_size)
 {
 	TVector<int> v(4), v2(4);
-	ASSERT_NO_THROW(v = v2);
+	for (int i = 0; i < 4; i++)
+		v[i] = 5;
+	for (int i = 0; i < 4; i++)
+		v2[i] = 10;
+	v = v2;
+	EXPECT_EQ(1, v == v2);
 }
 
 TEST(TVector, assign_operator_change_vector_size)
@@ -95,21 +100,33 @@ TEST(TVector, assign_operator_change_vector_size)
 TEST(TVector, can_assign_vectors_of_different_size)
 {
 	TVector<int> v(4), v2(10);
-	ASSERT_NO_THROW(v = v2);
+	for (int i = 0; i < 4; i++)
+		v[i] = 5;
+	for (int i = 0; i < 10; i++)
+		v2[i] = 10;
+	v = v2;
+	EXPECT_EQ(1, v == v2);
+	// заполнить вектора, проверить корректность результата
+
+//	ASSERT_NO_THROW(v = v2);
 }
 
 TEST(TVector, compare_equal_vectors_return_true)
 {
 	TVector<int> v(4), v2(4);
-	v[1] = 2;
-	v2[1] = 2;
+	for (int i = 0; i < 4; i++)
+		v[i] = 5;
+	for (int i = 0; i < 4; i++)
+		v2[i] = 5;
 	EXPECT_EQ(1, v2 == v);
 }
 
 TEST(TVector, compare_vector_with_itself_return_true)
 {
 	TVector<int> v(4);
-		EXPECT_EQ(1, v==v);
+	for (int i = 0; i < 4; i++)
+		v[i] = 5;
+	EXPECT_EQ(1, v==v);
 }
 
 TEST(TVector, vectors_with_different_size_are_not_equal)
@@ -121,25 +138,63 @@ TEST(TVector, vectors_with_different_size_are_not_equal)
 TEST(TVector, can_add_scalar_to_vector)
 {
 	TVector<int> v2(4);
-	ASSERT_NO_THROW(v2+2);
+	for (int i = 0; i < 4; i++)
+		v2[i] = 2;
+	v2 = v2 + 3;
+	TVector<int> v(4);
+	for (int i = 0; i < 4; i++)
+		v[i] = 5;
+	EXPECT_EQ(1, v == v2);
+	// заполнить вектора, проверить корректность результата
+
+//	ASSERT_NO_THROW(v2+2);
 }
 
 TEST(TVector, can_subtract_scalar_from_vector)
 {
 	TVector<int> v2(4);
-	ASSERT_NO_THROW(v2 - 2);
+	for (int i = 0; i < 4; i++)
+		v2[i] = 3;
+	v2 = v2 - 2;
+	TVector<int> v(4);
+	for (int i = 0; i < 4; i++)
+		v[i] = 1;
+	EXPECT_EQ(1, v == v2);
+	// заполнить вектора, проверить корректность результата
+
+//	ASSERT_NO_THROW(v2 - 2);
 }
 
 TEST(TVector, can_multiply_scalar_by_vector)
 {
 	TVector<int> v2(4);
-	ASSERT_NO_THROW(v2 * 2);
+	for (int i = 0; i < 4; i++)
+		v2[i] = 2;
+	v2 = v2 * 2;
+	TVector<int> v(4);
+	for (int i = 0; i < 4; i++)
+		v[i] = 4;
+	EXPECT_EQ(1, v == v2);
+	// заполнить вектора, проверить корректность результата
+
+//	ASSERT_NO_THROW(v2 * 2);
 }
 
 TEST(TVector, can_add_vectors_with_equal_size)
 {
-	TVector<int> v(4), v2(4);
-	ASSERT_NO_THROW(v2 + v);
+	TVector<int> v(2), v2(2);
+	// заполнить вектора, проверить корректность результата
+	for (int i = 0; i < 2; i++)
+	{
+		v[i] = i + 1; v2[i] = i + 2;
+	}
+	TVector<int> res_ex(2);
+	for (int i = 0; i < 2; i++)
+		res_ex[i] = 2*i+3;
+	TVector<int> res(2); 
+	res = v2 + v;
+	EXPECT_EQ(1, res_ex == res);
+//	ASSERT_NO_THROW(v2 + v);
 }
 
 TEST(TVector, cant_add_vectors_with_not_equal_size)
@@ -150,8 +205,18 @@ TEST(TVector, cant_add_vectors_with_not_equal_size)
 
 TEST(TVector, can_subtract_vectors_with_equal_size)
 {
-	TVector<int> v(4), v2(4);
-	ASSERT_NO_THROW( v2 - v);
+	TVector<int> v(2), v2(2);
+	// заполнить вектора, проверить корректность результата
+	for (int i = 0; i < 2; i++)
+	{
+		v[i] = i + 1; v2[i] = i + 2;
+	}
+	TVector<int> res_ex(2);
+	for (int i = 0; i < 2; i++)
+		res_ex[i] = 1;
+	TVector<int> res(2);
+	res = v2 - v;
+	EXPECT_EQ(1, res_ex == res);
 }
 
 TEST(TVector, cant_subtract_vectors_with_not_equal_size)
@@ -162,8 +227,17 @@ TEST(TVector, cant_subtract_vectors_with_not_equal_size)
 
 TEST(TVector, can_multiply_vectors_with_equal_size)
 {
-	TVector<int> v(4), v2(4);
-	ASSERT_NO_THROW(v2 * v);
+	TVector<int> v(2), v2(2);
+	for (int i = 0; i < 2; i++)
+	{
+		v[i] = 2; v2[i] = 3;
+	}
+	int res_ex = v*v2;
+	int res = 12;
+	EXPECT_EQ(res, res_ex);
+
+	// заполнить вектора, проверить корректность результата
+//	ASSERT_NO_THROW(v2 * v);
 }
 
 TEST(TVector, cant_multiply_vectors_with_not_equal_size)

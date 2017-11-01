@@ -68,6 +68,8 @@ TVector<ValType>::TVector(int s, int si)
 		Size = s;
 		StartIndex = si;
 		pVector = new ValType[s];
+		for (int i = 0; i < s; i++)
+			pVector[i] = 0;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> //конструктор копирования
@@ -88,7 +90,7 @@ TVector<ValType>::~TVector()
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int pos)
 {
-	if ((pos < 0) || (pos>Size)) throw "negative or too large pos";
+	if ((pos < 0) || (pos>Size-StartIndex)) throw "negative or too large pos";
 	return pVector[pos - StartIndex];
 } /*-------------------------------------------------------------------------*/
 
@@ -243,15 +245,16 @@ bool TMatrix<ValType>::operator!=(const TMatrix<ValType> &mt) const
 template <class ValType> // присваивание
 TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType> &mt)
 {
-	if (this != &mt) {
-		if (Size != mt.Size) {
-			delete[] pVector;
-			pVector = new TVector<ValType>[mt.Size];
-		}
-		Size = mt.Size; StartIndex = mt.StartIndex;
-		for (int i = 0; i < Size; i++)
-			pVector[i] = mt.pVector[i];
-	}
+	TVector<TVector<ValType>>::operator=(mt);
+	//if (this != &mt) {
+	//	if (Size != mt.Size) {
+	//		delete[] pVector;
+	//		pVector = new TVector<ValType>[mt.Size];
+	//	}
+	//	Size = mt.Size; StartIndex = mt.StartIndex;
+	//	for (int i = 0; i < Size; i++)
+	//		pVector[i] = mt.pVector[i];
+	//}
 	return *this;
 } /*-------------------------------------------------------------------------*/
 

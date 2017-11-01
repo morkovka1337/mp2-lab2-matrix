@@ -72,7 +72,12 @@ TEST(TMatrix, can_assign_matrix_to_itself)
 TEST(TMatrix, can_assign_matrices_of_equal_size)
 {
 	TMatrix<int> m(5), m2(5);
-	ASSERT_NO_THROW(m = m2);
+	m[0][0] = 1;
+	m2[1][1] = 2;
+	m = m2;
+	TMatrix<int> m3(5);
+	m3[1][1] = 2;
+	EXPECT_EQ(1, m3 == m);
 }
 
 TEST(TMatrix, assign_operator_change_matrix_size)
@@ -85,7 +90,12 @@ TEST(TMatrix, assign_operator_change_matrix_size)
 TEST(TMatrix, can_assign_matrices_of_different_size)
 {
 	TMatrix<int> m(5), m2(7);
-	ASSERT_NO_THROW(m = m2);
+	m[0][0] = 1;
+	m2[1][1] = 2;
+	m = m2;
+	TMatrix<int> m3(7);
+	m3[1][1] = 2;
+	EXPECT_EQ(1, m3 == m);
 }
 
 TEST(TMatrix, compare_equal_matrices_return_true)
@@ -108,8 +118,14 @@ TEST(TMatrix, matrices_with_different_size_are_not_equal)
 
 TEST(TMatrix, can_add_matrices_with_equal_size)
 {
-	TMatrix<int> m(5), m2(5);
-	ASSERT_NO_THROW(m + m2);
+	TMatrix<int> m(2), m2(2);
+	TMatrix<int> m1(2);
+	m[0][0] = 1;
+	m2[0][0] = 5;
+	m1 = m+m2;
+	TMatrix<int> m4(2);
+	m4[0][0] = 6;
+	EXPECT_EQ(1, m4 == m1);
 }
 
 TEST(TMatrix, cant_add_matrices_with_not_equal_size)
@@ -120,13 +136,19 @@ TEST(TMatrix, cant_add_matrices_with_not_equal_size)
 
 TEST(TMatrix, can_subtract_matrices_with_equal_size)
 {
-	TMatrix<int> m(5), m2(5);
-	ASSERT_NO_THROW(m - m2);
+	TMatrix<int> m(2), m2(2);
+	TMatrix<int> m1(2);
+	m[0][0] = 11;
+	m2[0][0] = 5;
+	m1 = (m-m2);
+	TMatrix<int> m4(2);
+	m4[0][0] = 6;
+	EXPECT_EQ(1, m4 == m1);
 }
 
 TEST(TMatrix, cant_subtract_matrixes_with_not_equal_size)
 {
-	TMatrix<int> m(5), m2(7);
+	TMatrix<int> m(1), m2(2);
 	ASSERT_ANY_THROW(m - m2);
 }
 
